@@ -14,13 +14,13 @@ class meme(commands.Cog):
         self.client = client
     @commands.command(name="meme")
     async def meme(self,ctx):
-        """Reddit Meme (jakertown only development)"""
+        """Reddit Meme (jakertown, CursedRoblox, CursedMinecraft)"""
         #timeframe var
         t_f = ["hour", "day", "week", "month", "year", "all"]
-        listing_ = ["controversial", "best", "hot", "new", "random", "rising", "top"]
+        listing_ = ["controversial", "best", "hot", "new", "rising", "top"]
         random_ = 0
         try:
-            subreddit = 'videomemes'
+            subreddit = random.choice(["jakertown","CursedRoblox","CursedMinecraft"])
             limit = 100
             timeframe = random.choice(t_f)
             listing = random.choice(listing_)
@@ -29,50 +29,53 @@ class meme(commands.Cog):
             for filename in os.listdir("./temp"):
                 if filename.endswith(".mp4"):
                     os.remove(os.path.join("temp",filename))
-            #download reddit video
-            if r['data']['children'][random_]['data']["is_video"]:
-                reddit = Downloader()
-                reddit.auto_max = True
-                reddit.max_s = 4 * (1 << 20)
-                reddit.path = os.path.join("temp")
-                print(f"{r['data']['children'][random_]['data']['url']}")
-                reddit.url = f"{r['data']['children'][random_]['data']['url']}"
-                reddit.download()
-                #convert video to gif for discord embed
-                for filename in os.listdir("./temp"):
-                    if filename.endswith(".mp4"):
-                        videoClip = VideoFileClip(os.path.join("temp",filename))
-                        videoClip.write_gif(os.path.join("temp","batocom.gif"))
-                embed = discord.Embed(title=f"r/{subreddit}",
-                                        url=f"{r['data']['children'][random_]['data']['url']}",
-                                        description=f"{r['data']['children'][random_]['data']['title']}",
-                                        color=discord.Color.from_rgb(255,255,255))
-                file = discord.File()
-                embed.set_author(name=ctx.author.name+"#"+ctx.author.discriminator)
-                embed.set_image(url="attachment://batocom.gif")
-                embed.set_footer(text="Lượt xem: {} | Up: {} | Down: {} | Score: {} ".format(
-                    r['data']['children'][random_]['data']['view_count'],
-                    r['data']['children'][random_]['data']['ups'],
-                    r['data']['children'][random_]['data']['downs'],
-                    r['data']['children'][random_]['data']['score'],
-                    ))
-                await ctx.send(embed=embed)
-            else:
-                embed = discord.Embed(title=f"r/{subreddit}",
+
+        
+                # reddit = Downloader()
+                # reddit.auto_max = True
+                # reddit.max_s = 1 * (1 << 20)
+                # reddit.path = os.path.join("temp")
+                # print(f"{r['data']['children'][random_]['data']['url']}")
+                # reddit.url = f"{r['data']['children'][random_]['data']['url']}"
+                # reddit.download()
+                # #convert video to gif for discord embed
+                # for filename in os.listdir("./temp"):
+                #     if filename.endswith(".mp4"):
+                #         videoClip = VideoFileClip(os.path.join("temp",filename))
+                #         videoClip.write_gif(os.path.join("temp","batocom.gif"))
+                # embed = discord.Embed(title=f"r/{subreddit}",
+                #                         url=f"{r['data']['children'][random_]['data']['url']}",
+                #                         description=f"{r['data']['children'][random_]['data']['title']}",
+                #                         color=discord.Color.from_rgb(255,255,255))
+                
+                # file = discord.File(os.path.join("temp","batocom.gif"), filename="image.gif")
+                # embed.set_author(name=ctx.author.name+"#"+ctx.author.discriminator)
+                # embed.set_image(url="attachment://image.gif")
+                # embed.set_footer(text="Lượt xem: {} | Up: {} | Down: {} | Score: {} ".format(
+                #     r['data']['children'][random_]['data']['view_count'],
+                #     r['data']['children'][random_]['data']['ups'],
+                #     r['data']['children'][random_]['data']['downs'],
+                #     r['data']['children'][random_]['data']['score'],
+                #     ))
+                # await ctx.send(embed=embed, file=file)
+
+            embed = discord.Embed(title=f"r/{subreddit}",
                                         url=f"{r['data']['children'][0]['data']['url']}",
                                         description=f"{r['data']['children'][0]['data']['title']}",
                                         color=discord.Color.from_rgb(255,255,255))
-                embed.set_author(name=ctx.author.name+"#"+ctx.author.discriminator)
-                embed.set_image(url=f"{r['data']['children'][0]['data']['url']}")
-                embed.set_footer(text="Lượt xem: {} | Up: {} | Down: {} | Score: {} ".format(
+            embed.add_field(name="________________________", value=f"{r['data']['children'][0]['data']['selftext']}")
+            embed.set_author(name=ctx.author.name+"#"+ctx.author.discriminator)
+            embed.set_image(url=f"{r['data']['children'][0]['data']['url']}")
+            embed.set_footer(text="Lượt xem: {} | Up: {} | Down: {} | Score: {} ".format(
                     r['data']['children'][random_]['data']['view_count'],
                     r['data']['children'][random_]['data']['ups'],
                     r['data']['children'][random_]['data']['downs'],
                     r['data']['children'][random_]['data']['score'],
                     ))
-                await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
         except Exception as e:
+            await ctx.send("Reddit APIs có lỗi, dùng lại lệnh xem ?")
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno, e)

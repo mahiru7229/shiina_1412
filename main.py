@@ -12,6 +12,14 @@ client = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 @client.event
 async def on_ready():
     print(f"Bot logged in successfully {client.user}")
+# @client.event
+# async def on_message(message):
+#     if message.author == client.user:
+#         return
+#     if str(message.content) == "phan ung cua tao":
+#         file = discord.File(os.path.join("vid","phanungcuatao.mp4"))
+#         await message.channel.send(file=file)
+
 
 @client.event
 async def on_message_delete(message):

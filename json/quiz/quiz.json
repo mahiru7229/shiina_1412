@@ -1,0 +1,14 @@
+{
+    "Đây là anime gì ?":{
+        "answers": ["Thiên sứ nhà bên", "Anh Chàng Băng Giá Và Cô Nàng Lạnh Lùng"],
+        "correct": 0,
+        "times": 10,
+        "points": 5
+    },
+    "Đây là anime gì 2":{
+        "answers": ["Thiên sứ nhà bên", "Anh Chàng Băng Giá Và Cô Nàng Lạnh Lùng"],
+        "correct": 0,
+        "times": 15,
+        "points": 1
+    }
+}

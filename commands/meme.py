@@ -12,9 +12,17 @@ import random
 class meme(commands.Cog):
     def __init__(self, client):
         self.client = client
+
+
+    
+
     @commands.command(name="meme")
+    # @commands.cooldown(1,15,commands.BucketType.user)
     async def meme(self,ctx):
-        """Reddit Meme (jakertown, CursedRoblox, CursedMinecraft)"""
+        """Reddit Meme (jakertown, CursedRoblox, CursedMinecraft)
+        
+        Cách dùng: .meme
+        """
         #timeframe var
         t_f = ["hour", "day", "week", "month", "year", "all"]
         listing_ = ["controversial", "best", "hot", "new", "rising", "top"]
@@ -58,12 +66,14 @@ class meme(commands.Cog):
                 #     r['data']['children'][random_]['data']['score'],
                 #     ))
                 # await ctx.send(embed=embed, file=file)
-
+            f_text = f"{r['data']['children'][0]['data']['selftext']}"
+            if int(len(f_text)) > 1024:
+                f_text = f_text[0:1023]
             embed = discord.Embed(title=f"r/{subreddit}",
                                         url=f"{r['data']['children'][0]['data']['url']}",
                                         description=f"{r['data']['children'][0]['data']['title']}",
                                         color=discord.Color.from_rgb(255,255,255))
-            embed.add_field(name="________________________", value=f"{r['data']['children'][0]['data']['selftext']}")
+            embed.add_field(name="________________________", value=f_text)
             embed.set_author(name=ctx.author.name+"#"+ctx.author.discriminator)
             embed.set_image(url=f"{r['data']['children'][0]['data']['url']}")
             embed.set_footer(text="Lượt xem: {} | Up: {} | Down: {} | Score: {} ".format(
@@ -95,8 +105,6 @@ class meme(commands.Cog):
     
 async def setup(client):
     await client.add_cog(meme(client))
-
-
 
 if __name__ == "__main__":
     print("Mahiru#1542")

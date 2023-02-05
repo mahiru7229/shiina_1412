@@ -191,7 +191,11 @@ poetry.toml
 .history
 .ionide
 
+# secret
 
+./json
+./commands
+./vid
 
 
 
